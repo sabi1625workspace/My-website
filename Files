@@ -1,0 +1,66 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+collections:
+  - name: "site"
+    label: "Website Content"
+    files:
+      - name: "content"
+        label: "All Content"
+        file: "content.json"
+        fields:
+          - { label: "Display Name (top left logo)", name: "name", widget: "string" }
+          - { label: "Display Name (footer copyright)", name: "name2", widget: "string" }
+
+          - { label: "Hero — Small label above title", name: "heroEyebrow", widget: "string" }
+          - { label: "Hero — Main title", name: "heroTitle", widget: "string" }
+          - { label: "Hero — Subtitle", name: "heroTagline", widget: "text" }
+          - { label: "Hero — Background photo", name: "heroImage", widget: "image" }
+
+          - { label: "Documentary — Title", name: "docTitle", widget: "string" }
+          - { label: "Documentary — Description", name: "docDescription", widget: "text" }
+          - { label: "Documentary — Button text", name: "docLinkLabel", widget: "string" }
+          - { label: "Documentary — Button link (e.g. YouTube URL)", name: "docLinkUrl", widget: "string" }
+          - { label: "Documentary — Photo", name: "docImage", widget: "image" }
+
+          - { label: "Pull-quote statement", name: "statementText", widget: "text" }
+
+          - { label: "Galleries — Section title", name: "galleriesTitle", widget: "string" }
+          - { label: "Galleries — Section note", name: "galleriesNote", widget: "text" }
+
+          - { label: "About — Lead line", name: "aboutIntro", widget: "text" }
+          - { label: "About — Body text", name: "aboutBody", widget: "text" }
+          - { label: "About — Photo", name: "aboutImage", widget: "image" }
+          - { label: "About — Focus", name: "factFocus", widget: "string" }
+          - { label: "About — Tools", name: "factTools", widget: "string" }
+          - { label: "About — Based", name: "factBased", widget: "string" }
+
+          - { label: "Contact — Title", name: "contactTitle", widget: "string" }
+          - { label: "Contact — Email display text", name: "emailLabel2", widget: "string" }
+          - { label: "Contact — Instagram label", name: "instagramLabel", widget: "string" }
+          - { label: "Contact — Instagram URL", name: "instagramUrl", widget: "string" }
+          - { label: "Contact — YouTube label", name: "youtubeLabel", widget: "string" }
+          - { label: "Contact — YouTube URL", name: "youtubeUrl", widget: "string" }
+          - { label: "Contact — Email label", name: "emailLabel", widget: "string" }
+          - { label: "Contact — Email link (mailto:you@example.com)", name: "emailUrl", widget: "string" }
+
+          - label: "Galleries"
+            name: "galleries"
+            widget: "list"
+            label_singular: "Gallery"
+            summary: "{{fields.title}} — {{fields.meta}}"
+            fields:
+              - { label: "Location name", name: "title", widget: "string" }
+              - { label: "Location detail", name: "meta", widget: "string" }
+              - label: "Photos"
+                name: "images"
+                widget: "list"
+                label_singular: "Photo"
+                summary: "{{fields.caption}}"
+                fields:
+                  - { label: "Photo", name: "src", widget: "image" }
+                  - { label: "Caption", name: "caption", widget: "string" }
