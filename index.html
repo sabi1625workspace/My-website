@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shanmuga Santhosh — Travel Photography & Documentaries</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#120f0c;
+    --surface:#1c1712;
+    --surface-2:#241d17;
+    --ink:#f5efe2;
+    --ink-dim:#a99c88;
+    --amber:#e3a344;
+    --amber-bright:#f2b95c;
+    --teal:#3c7469;
+    --rust:#b5502f;
+    --rule:rgba(245,239,226,0.13);
+    --shadow:0 30px 70px rgba(0,0,0,0.5);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Fraunces',serif; font-weight:500; letter-spacing:-0.01em; margin:0; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.03em; }
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+  ::selection{ background:var(--amber); color:#1c1712; }
+
+  /* progress bar */
+  #progress{ position:fixed; top:0; left:0; height:3px; background:var(--amber); z-index:200; width:0%; transition:width .1s linear; }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:150;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 24px;
+  }
+  header::before{
+    content:''; position:absolute; inset:0; z-index:-1;
+    background:linear-gradient(to bottom, rgba(18,15,12,0.9), transparent);
+  }
+  .logo{ font-family:'Fraunces',serif; font-size:17px; letter-spacing:0.01em; text-decoration:none; }
+  .logo b{ color:var(--amber); font-weight:600; }
+  #menu-btn{
+    display:flex; align-items:center; gap:10px; background:none; border:1px solid var(--rule);
+    color:var(--ink); padding:9px 16px; border-radius:30px; font-size:12px; cursor:pointer;
+    letter-spacing:0.08em; text-transform:uppercase; font-family:'Inter',sans-serif;
+  }
+  #menu-btn:hover{ border-color:var(--amber); color:var(--amber); }
+  .burger{ width:16px; height:11px; position:relative; }
+  .burger span{ position:absolute; left:0; right:0; height:1.5px; background:currentColor; transition:transform .3s ease, opacity .3s ease; }
+  .burger span:nth-child(1){ top:0; }
+  .burger span:nth-child(2){ top:5px; }
+  .burger span:nth-child(3){ top:10px; }
+  body.nav-open .burger span:nth-child(1){ transform:translateY(5px) rotate(45deg); }
+  body.nav-open .burger span:nth-child(2){ opacity:0; }
+  body.nav-open .burger span:nth-child(3){ transform:translateY(-5px) rotate(-45deg); }
+
+  /* ---------- FULLSCREEN NAV ---------- */
+  #nav-overlay{
+    position:fixed; inset:0; z-index:140; background:var(--surface);
+    display:flex; flex-direction:column; justify-content:center;
+    padding:80px 24px 40px; opacity:0; pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  body.nav-open #nav-overlay{ opacity:1; pointer-events:auto; }
+  #nav-overlay .wrap{ width:100%; }
+  #nav-overlay a{
+    display:block; font-family:'Fraunces',serif; font-size:clamp(34px,9vw,64px);
+    text-decoration:none; color:var(--ink-dim); padding:8px 0; border-bottom:1px solid var(--rule);
+    transform:translateY(18px); opacity:0; transition:transform .5s ease, opacity .5s ease, color .2s ease;
+  }
+  body.nav-open #nav-overlay a{ transform:translateY(0); opacity:1; }
+  body.nav-open #nav-overlay a:nth-child(1){ transition-delay:.05s; }
+  body.nav-open #nav-overlay a:nth-child(2){ transition-delay:.1s; }
+  body.nav-open #nav-overlay a:nth-child(3){ transition-delay:.15s; }
+  body.nav-open #nav-overlay a:nth-child(4){ transition-delay:.2s; }
+  #nav-overlay a:hover, #nav-overlay a.active{ color:var(--amber); }
+  #nav-overlay a .num{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--rust); margin-right:14px; vertical-align:middle; }
+  .nav-foot{ display:flex; gap:22px; margin-top:34px; flex-wrap:wrap; opacity:0; transition:opacity .5s ease .3s; }
+  body.nav-open .nav-foot{ opacity:1; }
+  .nav-foot a{ text-decoration:none; font-size:12px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.08em; }
+  .nav-foot a:hover{ color:var(--amber); }
+
+  /* ---------- HERO ---------- */
+  .hero{ position:relative; min-height:100svh; display:flex; align-items:flex-end; overflow:hidden; }
+  .hero-bg{ position:absolute; inset:0; background-size:cover; background-position:center; animation:kenburns 24s ease-in-out infinite alternate; }
+  @keyframes kenburns{ from{ transform:scale(1); } to{ transform:scale(1.14) translate(-1.5%,-1%); } }
+  @media (prefers-reduced-motion: reduce){ .hero-bg{ animation:none; } }
+  .hero-glow{ position:absolute; inset:0; z-index:1; opacity:0; transition:opacity .4s ease;
+    background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(227,163,68,0.16), transparent 60%); }
+  @media (pointer:fine){ .hero:hover .hero-glow{ opacity:1; } }
+  .hero::before{ content:''; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(to top, rgba(14,11,9,0.95) 8%, rgba(14,11,9,0.25) 50%, rgba(14,11,9,0.5) 100%); }
+  .hero-content{ position:relative; z-index:2; padding:0 24px 0; width:100%; }
+  .hero-eyebrow{ font-size:12px; text-transform:uppercase; letter-spacing:0.2em; color:var(--amber); margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+  .hero-eyebrow::before{ content:''; width:26px; height:1px; background:var(--amber); }
+  .hero h1{ font-size:clamp(42px,8vw,96px); line-height:0.97; max-width:15ch; }
+  .hero p.tagline{ max-width:44ch; color:var(--ink-dim); font-size:clamp(15px,1.6vw,18px); margin:22px 0 34px; }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:0; }
+
+  /* marquee */
+  .marquee{ position:relative; z-index:2; border-top:1px solid var(--rule); overflow:hidden; padding:16px 0; margin-top:44px; }
+  .marquee-track{ display:flex; white-space:nowrap; width:max-content; animation:marquee 26s linear infinite; }
+  @media (prefers-reduced-motion: reduce){ .marquee-track{ animation:none; } }
+  .marquee-track span{ font-family:'Fraunces',serif; font-size:15px; color:var(--ink-dim); padding:0 26px; display:inline-flex; align-items:center; gap:26px; }
+  .marquee-track span::after{ content:'✦'; color:var(--rust); font-size:11px; }
+  @keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+  /* ---------- BUTTONS ---------- */
+  .btn{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; padding:14px 24px;
+    font-size:13px; font-weight:600; letter-spacing:0.02em; border:none; border-radius:2px; cursor:pointer;
+    transition:transform .15s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    font-family:'Inter',sans-serif; }
+  .btn.solid{ background:var(--amber); color:#1c1712; }
+  .btn.solid:hover{ background:var(--amber-bright); transform:translateY(-2px); }
+  .btn.ghost{ background:transparent; color:var(--ink); border:1px solid var(--rule); }
+  .btn.ghost:hover{ border-color:var(--amber); color:var(--amber); transform:translateY(-2px); }
+  .btn:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+
+  /* ---------- SECTION SCAFFOLDING ---------- */
+  .section{ padding:120px 0; border-top:1px solid var(--rule); position:relative; }
+  .kicker{ display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .kicker .idx{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--rust); }
+  .kicker .label{ font-size:12px; text-transform:uppercase; letter-spacing:0.18em; color:var(--amber); }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:54px; flex-wrap:wrap; }
+  .section-head h2{ font-size:clamp(28px,4.4vw,48px); max-width:16ch; }
+  .section-note{ max-width:34ch; color:var(--ink-dim); font-size:14px; }
+
+  /* ---------- STATEMENT ---------- */
+  .statement{ text-align:center; }
+  .statement p{ font-family:'Fraunces',serif; font-weight:400; font-size:clamp(24px,4.4vw,44px); line-height:1.28; max-width:20ch; margin:0 auto; }
+  .statement p .accent{ color:var(--amber); font-style:italic; }
+
+  /* ---------- FEATURED DOCUMENTARY ---------- */
+  .doc-feature{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:52px; align-items:center; }
+  @media (max-width:860px){ .doc-feature{ grid-template-columns:1fr; } }
+  .doc-frame{ position:relative; border-radius:3px; overflow:hidden; box-shadow:var(--shadow); aspect-ratio:4/5; }
+  .doc-frame .photo-img{ position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .8s ease; }
+  .doc-frame:hover .photo-img{ transform:scale(1.06); }
+  .doc-frame .tag{ position:absolute; left:16px; bottom:16px; background:rgba(18,15,12,0.85); border:1px solid var(--rule); padding:9px 13px; font-size:11px; transform:rotate(-1.4deg); }
+  .doc-copy h3{ font-size:clamp(26px,3.4vw,38px); margin-bottom:18px; }
+  .doc-copy p{ color:var(--ink-dim); margin-bottom:30px; }
+
+  /* ---------- GALLERY TABS ---------- */
+  .tab-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px; }
+  .tab-btn{ background:none; border:1px solid var(--rule); color:var(--ink-dim); padding:10px 18px;
+    border-radius:30px; font-size:13px; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s ease; }
+  .tab-btn:hover{ border-color:var(--amber); color:var(--ink); }
+  .tab-btn.active{ background:var(--amber); border-color:var(--amber); color:#1c1712; font-weight:600; }
+  .tab-count{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-dim); margin-bottom:24px; display:block; }
+
+  .gallery-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; animation:fadein .4s ease; }
+  @keyframes fadein{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+  .gallery-grid .photo:first-child{ grid-column:span 2; grid-row:span 2; }
+  @media (max-width:900px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); } .gallery-grid .photo:first-child{ grid-column:span 2; grid-row:span 1; } }
+  .photo{ position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--surface-2); cursor:pointer; border-radius:2px; }
+  .gallery-grid .photo:first-child{ aspect-ratio:auto; }
+  .photo .photo-img{ position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .6s cubic-bezier(.16,.9,.3,1); }
+  .photo:hover .photo-img{ transform:scale(1.08); }
+  .photo::after{ content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(14,11,9,0.75), transparent 45%); opacity:0; transition:opacity .25s ease; }
+  .photo:hover::after{ opacity:1; }
+  .photo .field-note{ position:absolute; inset:auto 10px 10px 10px; font-size:11px; color:var(--ink);
+    transform:translateY(8px); opacity:0; transition:opacity .25s ease, transform .25s ease; }
+  .photo:hover .field-note, .photo:focus-within .field-note{ opacity:1; transform:translateY(0); }
+  .photo .expand-icon{ position:absolute; top:10px; right:10px; width:28px; height:28px; border-radius:50%;
+    background:rgba(18,15,12,0.7); border:1px solid var(--rule); display:flex; align-items:center; justify-content:center;
+    font-size:14px; opacity:0; transition:opacity .2s ease; }
+  .photo:hover .expand-icon{ opacity:1; }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{ display:grid; grid-template-columns:0.8fr 1.2fr; gap:60px; align-items:start; }
+  @media (max-width:860px){ .about-grid{ grid-template-columns:1fr; } }
+  .about-photo{ position:relative; aspect-ratio:3/4; overflow:hidden; box-shadow:var(--shadow); border-radius:3px; }
+  .about-photo .photo-img{ position:absolute; inset:0; background-size:cover; background-position:center; }
+  .about-copy p{ color:var(--ink-dim); margin-bottom:20px; max-width:58ch; }
+  .about-copy p.lede{ color:var(--ink); font-size:19px; font-family:'Fraunces',serif; font-weight:400; }
+  .facts-row{ display:flex; gap:0; flex-wrap:wrap; margin-top:36px; border-top:1px solid var(--rule); }
+  .fact{ flex:1; min-width:140px; padding:20px 20px 0 0; }
+  .fact .fact-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:var(--rust); margin-bottom:8px; display:block; }
+  .fact .fact-value{ font-size:14px; }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{ padding:90px 0 40px; border-top:1px solid var(--rule); }
+  .contact-row h2{ font-size:clamp(32px,7vw,72px); max-width:14ch; }
+  .contact-email{ display:inline-flex; align-items:baseline; gap:12px; text-decoration:none; margin-top:26px;
+    font-family:'Fraunces',serif; font-size:clamp(20px,3vw,28px); color:var(--amber); border-bottom:1px solid var(--rule); padding-bottom:10px; }
+  .contact-email:hover{ border-color:var(--amber); }
+  .socials{ display:flex; gap:24px; margin-top:40px; flex-wrap:wrap; }
+  .socials a{ text-decoration:none; font-size:13px; color:var(--ink-dim); border-bottom:1px solid var(--rule); padding-bottom:4px; transition:color .2s, border-color .2s; }
+  .socials a:hover{ color:var(--amber); border-color:var(--amber); }
+  .foot-bottom{ margin-top:70px; display:flex; justify-content:space-between; color:var(--ink-dim); font-size:11px; flex-wrap:wrap; gap:10px; }
+
+  /* ---------- REVEAL ---------- */
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; } }
+
+  /* ---------- EDIT MODE ---------- */
+  #edit-toggle{ position:fixed; right:18px; bottom:18px; z-index:100; background:var(--surface); color:var(--ink);
+    border:1px solid var(--rule); padding:12px 18px; font-size:12px; border-radius:30px; cursor:pointer;
+    display:flex; align-items:center; gap:8px; box-shadow:var(--shadow); font-family:'Inter',sans-serif; }
+  #edit-toggle:hover{ border-color:var(--amber); }
+  .editable[contenteditable="true"]{ outline:1px dashed var(--amber); outline-offset:4px; border-radius:2px; background:rgba(227,163,68,0.07); }
+  .edit-bar{ position:fixed; left:0; right:0; bottom:0; z-index:99; background:var(--surface); border-top:1px solid var(--rule);
+    padding:14px 20px; display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  body.editing .edit-bar{ display:flex; }
+  body.editing{ padding-bottom:70px; }
+  .edit-bar span{ font-size:12px; color:var(--ink-dim); }
+  .edit-actions{ display:flex; gap:10px; }
+  .img-edit-btn{ position:absolute; top:8px; right:8px; z-index:5; background:rgba(18,15,12,0.85); color:var(--ink);
+    border:1px solid var(--rule); font-size:10px; padding:5px 8px; border-radius:20px; cursor:pointer; display:none; }
+  body.editing .img-edit-btn{ display:block; }
+  .toast{ position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-20px); background:var(--surface);
+    border:1px solid var(--amber); color:var(--ink); padding:11px 20px; font-size:13px; border-radius:3px; z-index:200;
+    opacity:0; pointer-events:none; transition:opacity .3s ease, transform .3s ease; }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  #loading-screen{ position:fixed; inset:0; background:var(--bg); z-index:500; display:flex; align-items:center;
+    justify-content:center; color:var(--ink-dim); font-size:13px; letter-spacing:0.1em; text-transform:uppercase; }
+
+  /* ---------- LIGHTBOX ---------- */
+  #lightbox{ position:fixed; inset:0; z-index:300; background:rgba(10,8,6,0.97); display:none; align-items:center;
+    justify-content:center; flex-direction:column; padding:60px 20px; backdrop-filter:blur(4px); }
+  #lightbox.open{ display:flex; }
+  #lightbox .lb-frame{ position:relative; max-width:min(880px,92vw); max-height:70vh; width:100%; display:flex; align-items:center; justify-content:center; }
+  #lightbox img{ max-width:100%; max-height:70vh; object-fit:contain; box-shadow:var(--shadow); animation:lb-in .35s ease; }
+  @keyframes lb-in{ from{ opacity:0; transform:scale(.97); } to{ opacity:1; transform:scale(1); } }
+  #lightbox .lb-caption{ margin-top:18px; max-width:60ch; text-align:center; color:var(--ink-dim); font-size:13px; }
+  #lightbox .lb-caption b{ color:var(--amber); font-weight:500; }
+  #lightbox .lb-close{ position:absolute; top:20px; right:24px; background:none; border:none; color:var(--ink); font-size:28px; line-height:1; cursor:pointer; padding:6px; }
+  #lightbox .lb-nav{ background:none; border:1px solid var(--rule); color:var(--ink); width:44px; height:44px; border-radius:50%;
+    font-size:18px; cursor:pointer; position:absolute; top:50%; transform:translateY(-50%); }
+  #lightbox .lb-nav:hover{ border-color:var(--amber); color:var(--amber); }
+  #lightbox .lb-prev{ left:-4px; } #lightbox .lb-next{ right:-4px; }
+  @media (max-width:640px){
+    #lightbox .lb-nav{ position:fixed; top:auto; bottom:24px; transform:none; }
+    #lightbox .lb-prev{ left:24px; } #lightbox .lb-next{ right:24px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading-screen">Loading —</div>
+<div id="progress"></div>
+
+<header>
+  <a href="#hero" class="logo"><b>Shanmuga</b> Santhosh</a>
+  <button id="menu-btn" onclick="toggleNav()">
+    <span class="burger"><span></span><span></span><span></span></span>
+    <span id="menu-label">Menu</span>
+  </button>
+</header>
+
+<div id="nav-overlay">
+  <div class="wrap">
+    <a href="#work" data-nav="work" onclick="closeNav()"><span class="num mono">01</span>Documentary</a>
+    <a href="#galleries" data-nav="galleries" onclick="closeNav()"><span class="num mono">02</span>Galleries</a>
+    <a href="#about" data-nav="about" onclick="closeNav()"><span class="num mono">03</span>About</a>
+    <a href="#contact" data-nav="contact" onclick="closeNav()"><span class="num mono">04</span>Contact</a>
+    <div class="nav-foot">
+      <a data-link-field="instagramUrl" href="#">Instagram</a>
+      <a data-link-field="youtubeUrl" href="#">YouTube</a>
+      <a data-link-field="emailUrl" href="#">Email</a>
+    </div>
+  </div>
+</div>
+
+<section class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-glow" id="hero-glow"></div>
+  <div class="img-edit-btn" data-img-target="hero">Change image</div>
+  <div class="hero-content">
+    <div class="wrap">
+      <span class="hero-eyebrow editable" data-field="heroEyebrow" contenteditable="false">Travel photography · documentary film</span>
+      <h1 class="editable" data-field="heroTitle" contenteditable="false">Stories the map doesn't show.</h1>
+      <p class="tagline editable" data-field="heroTagline" contenteditable="false">Festivals, faith, and everyday emotion across India — carried home in frames and film.</p>
+      <div class="hero-cta">
+        <a href="#galleries" class="btn solid">View the work</a>
+        <a href="#work" class="btn ghost">Watch the documentary</a>
+      </div>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track mono" id="marquee-track"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="doc-feature reveal">
+      <div class="doc-frame" id="doc-frame-bg">
+        <div class="photo-img" id="doc-photo-img"></div>
+        <div class="img-edit-btn" data-img-target="doc">Change image</div>
+        <div class="tag mono">Kashi, Uttar Pradesh — ongoing</div>
+      </div>
+      <div class="doc-copy">
+        <div class="kicker"><span class="idx mono">01</span><span class="label">Featured documentary</span></div>
+        <h3 class="editable" data-field="docTitle" contenteditable="false">Unseen Kashi</h3>
+        <p class="editable" data-field="docDescription" contenteditable="false">A long-form documentary following the ghats of Varanasi at first light — the rituals, the boatmen, the mourners and the priests — told through the people the city rarely lets a camera close to.</p>
+        <a class="btn solid editable" href="#" data-field="docLinkLabel" contenteditable="false" data-link-field="docLinkUrl" onclick="return handleLinkClick(event,this)">Watch on YouTube</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section statement">
+  <div class="wrap">
+    <p class="reveal editable" data-field="statementText" contenteditable="false">I don't chase the <span class="accent">postcard shot</span> — I wait for the moment right after it, when the ritual is over and the people are still standing there, being human.</p>
+  </div>
+</section>
+
+<section class="section" id="galleries">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="kicker"><span class="idx mono">02</span><span class="label">Galleries</span></div>
+        <h2 class="editable" data-field="galleriesTitle" contenteditable="false">Field work, by place.</h2>
+      </div>
+      <p class="section-note editable" data-field="galleriesNote" contenteditable="false">A running archive of festivals and quiet, unnamed moments — sorted the way a field notebook would.</p>
+    </div>
+    <div class="tab-row reveal" id="tab-row"></div>
+    <span class="tab-count mono" id="tab-count"></span>
+    <div id="gallery-container"></div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="about-grid reveal">
+      <div class="about-photo" id="about-photo-bg">
+        <div class="photo-img" id="about-photo-img"></div>
+        <div class="img-edit-btn" data-img-target="about">Change image</div>
+      </div>
+      <div class="about-copy">
+        <div class="kicker"><span class="idx mono">03</span><span class="label">About</span></div>
+        <p class="lede editable" data-field="aboutIntro" contenteditable="false">I go where the festival crowd thins out — that's usually where the real story is standing quietly to one side.</p>
+        <p class="editable" data-field="aboutBody" contenteditable="false">By day I work in automotive market research; the rest of my time goes to a camera bag and a notebook. My work follows human emotion through cultural festivals and everyday ritual across India — Kashi's ghats, Gudi Padwa in Mumbai, the deserts of Rajasthan — shot, cut, and voiced myself.</p>
+        <div class="facts-row">
+          <div class="fact"><span class="fact-label">Focus</span><span class="fact-value editable" data-field="factFocus" contenteditable="false">Human emotion, festivals, unseen India</span></div>
+          <div class="fact"><span class="fact-label">Tools</span><span class="fact-value editable" data-field="factTools" contenteditable="false">Adobe Premiere Pro</span></div>
+          <div class="fact"><span class="fact-label">Based</span><span class="fact-value editable" data-field="factBased" contenteditable="false">India</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-row reveal">
+      <div class="kicker"><span class="idx mono">04</span><span class="label">Contact</span></div>
+      <h2 class="editable" data-field="contactTitle" contenteditable="false">Have a story worth following?</h2>
+      <a class="contact-email editable" href="#" data-field="emailLabel2" contenteditable="false" data-link-field="emailUrl" onclick="return handleLinkClick(event,this)">hello@example.com →</a>
+      <div class="socials">
+        <a class="editable" data-field="instagramLabel" contenteditable="false" data-link-field="instagramUrl" href="#" onclick="return handleLinkClick(event,this)">Instagram</a>
+        <a class="editable" data-field="youtubeLabel" contenteditable="false" data-link-field="youtubeUrl" href="#" onclick="return handleLinkClick(event,this)">YouTube</a>
+        <a class="editable" data-field="emailLabel" contenteditable="false" data-link-field="emailUrl" href="#" onclick="return handleLinkClick(event,this)">Email</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="mono">© <span id="year"></span> <span class="editable" data-field="name2" contenteditable="false">Shanmuga Santhosh</span></span>
+      <span class="mono">Based in India</span>
+    </div>
+  </div>
+</footer>
+
+<button id="edit-toggle" onclick="toggleEditMode()">✎ Edit site</button>
+<div class="edit-bar">
+  <span>Editing — click any text or image button to change it.</span>
+  <div class="edit-actions">
+    <button class="btn ghost" onclick="cancelEdits()">Cancel</button>
+    <button class="btn solid" onclick="saveEdits()">Save changes</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<div id="lightbox">
+  <button class="lb-close" aria-label="Close" onclick="closeLightbox()">×</button>
+  <button class="lb-nav lb-prev" aria-label="Previous" onclick="stepLightbox(-1)">‹</button>
+  <button class="lb-nav lb-next" aria-label="Next" onclick="stepLightbox(1)">›</button>
+  <div class="lb-frame"><img id="lb-img" src="" alt=""></div>
+  <div class="lb-caption mono" id="lb-caption"></div>
+</div>
+
+<script>
+const STORAGE_KEY = 'site-content-v2';
+const PASS_KEY = 'edit-passcode';
+
+const defaultContent = {
+  name: "Shanmuga Santhosh",
+  name2: "Shanmuga Santhosh",
+  heroEyebrow: "Travel photography · documentary film",
+  heroTitle: "Stories the map doesn't show.",
+  heroTagline: "Festivals, faith, and everyday emotion across India — carried home in frames and film.",
+  heroImage: "https://picsum.photos/seed/kashi-hero/1800/1100",
+  docTitle: "Unseen Kashi",
+  docDescription: "A long-form documentary following the ghats of Varanasi at first light — the rituals, the boatmen, the mourners and the priests — told through the people the city rarely lets a camera close to.",
+  docLinkLabel: "Watch on YouTube",
+  docLinkUrl: "https://youtube.com",
+  docImage: "https://picsum.photos/seed/kashi-doc/1000/1250",
+  statementText: "I don't chase the postcard shot — I wait for the moment right after it, when the ritual is over and the people are still standing there, being human.",
+  galleriesTitle: "Field work, by place.",
+  galleriesNote: "A running archive of festivals and quiet, unnamed moments — sorted the way a field notebook would.",
+  aboutIntro: "I go where the festival crowd thins out — that's usually where the real story is standing quietly to one side.",
+  aboutBody: "By day I work in automotive market research; the rest of my time goes to a camera bag and a notebook. My work follows human emotion through cultural festivals and everyday ritual across India — Kashi's ghats, Gudi Padwa in Mumbai, the deserts of Rajasthan — shot, cut, and voiced myself.",
+  aboutImage: "https://picsum.photos/seed/santhosh-about/900/1200",
+  factFocus: "Human emotion, festivals, unseen India",
+  factTools: "Adobe Premiere Pro",
+  factBased: "India",
+  contactTitle: "Have a story worth following?",
+  emailLabel2: "hello@example.com →",
+  instagramLabel: "Instagram", instagramUrl: "https://instagram.com/shanmugsan",
+  youtubeLabel: "YouTube", youtubeUrl: "https://youtube.com/@shanmugsan",
+  emailLabel: "Email", emailUrl: "mailto:hello@example.com",
+  galleries: [
+    {
+      title: "Kashi", meta: "Varanasi, Uttar Pradesh",
+      images: [
+        {src:"https://picsum.photos/seed/kashi-1/1000/1250", caption:"Ganga aarti, first light — a boatman waiting out the crowd."},
+        {src:"https://picsum.photos/seed/kashi-2/700/875", caption:"A priest's hands, mid-ritual, at Dashashwamedh Ghat."},
+        {src:"https://picsum.photos/seed/kashi-3/700/875", caption:"Marigold garlands sold by the sackful before dawn."},
+        {src:"https://picsum.photos/seed/kashi-4/700/875", caption:"Smoke and stone — the steps before the crowds arrive."},
+        {src:"https://picsum.photos/seed/kashi-5/700/875", caption:"A lone diya set adrift on the river at dusk."}
+      ]
+    },
+    {
+      title: "Gudi Padwa", meta: "Mumbai, Maharashtra",
+      images: [
+        {src:"https://picsum.photos/seed/gudi-1/1000/1250", caption:"A gudi raised on a Worli balcony at sunrise."},
+        {src:"https://picsum.photos/seed/gudi-2/700/875", caption:"Rangoli laid before the household gudi."},
+        {src:"https://picsum.photos/seed/gudi-3/700/875", caption:"Neem leaves and sugar crystals — the taste of new year."},
+        {src:"https://picsum.photos/seed/gudi-4/700/875", caption:"A procession turning onto a narrow Girgaon lane."},
+        {src:"https://picsum.photos/seed/gudi-5/700/875", caption:"Marigolds strung overnight for the morning ceremony."}
+      ]
+    },
+    {
+      title: "Rajasthan", meta: "Jaisalmer & Jodhpur",
+      images: [
+        {src:"https://picsum.photos/seed/raj-1/1000/1250", caption:"Dust and gold hour, Thar desert edge."},
+        {src:"https://picsum.photos/seed/raj-2/700/875", caption:"Blue lanes of Jodhpur, mid-afternoon quiet."},
+        {src:"https://picsum.photos/seed/raj-3/700/875", caption:"A camel driver resting before the evening safari."},
+        {src:"https://picsum.photos/seed/raj-4/700/875", caption:"Mirrorwork catching the last light in a Jaisalmer haveli."},
+        {src:"https://picsum.photos/seed/raj-5/700/875", caption:"Turbans drying in the sun after the dye market."}
+      ]
+    },
+    {
+      title: "Streets & Everyday", meta: "Across India",
+      images: [
+        {src:"https://picsum.photos/seed/street-1/1000/1250", caption:"A chai stall opening before the rest of the street wakes."},
+        {src:"https://picsum.photos/seed/street-2/700/875", caption:"Monsoon light through a doorway in the old city."},
+        {src:"https://picsum.photos/seed/street-3/700/875", caption:"Hands at work — a craftsman between festival orders."},
+        {src:"https://picsum.photos/seed/street-4/700/875", caption:"The in-between moments a documentary crew usually cuts."},
+        {src:"https://picsum.photos/seed/street-5/700/875", caption:"A rooftop view held for one more minute before the light goes."}
+      ]
+    }
+  ]
+};
+
+let content = JSON.parse(JSON.stringify(defaultContent));
+let contentBeforeEdit = null;
+let isEditing = false;
+let activeGallery = 0;
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+/* ---------- NAV ---------- */
+function toggleNav(){
+  document.body.classList.toggle('nav-open');
+  document.getElementById('menu-label').textContent = document.body.classList.contains('nav-open') ? 'Close' : 'Menu';
+}
+function closeNav(){
+  document.body.classList.remove('nav-open');
+  document.getElementById('menu-label').textContent = 'Menu';
+}
+
+/* ---------- MARQUEE ---------- */
+function renderMarquee(){
+  const names = content.galleries.map(g => g.title);
+  const doubled = names.concat(names).concat(names);
+  document.getElementById('marquee-track').innerHTML = doubled.map(n => `<span>${n}</span>`).join('');
+}
+
+/* ---------- GALLERY TABS ---------- */
+function renderTabs(){
+  const row = document.getElementById('tab-row');
+  row.innerHTML = content.galleries.map((g, i) =>
+    `<button class="tab-btn${i===activeGallery ? ' active' : ''}" data-gi="${i}">${g.title}</button>`
+  ).join('');
+  row.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.onclick = () => {
+      activeGallery = parseInt(btn.getAttribute('data-gi'));
+      renderTabs();
+      renderGalleryGrid();
+    };
+  });
+  document.getElementById('tab-count').textContent =
+    (activeGallery+1).toString().padStart(2,'0') + ' / ' + content.galleries.length.toString().padStart(2,'0')
+    + ' — ' + content.galleries[activeGallery].meta;
+}
+
+function renderGalleryGrid(){
+  const container = document.getElementById('gallery-container');
+  const group = content.galleries[activeGallery];
+  const gi = activeGallery;
+  container.innerHTML = `
+    <div class="gallery-grid">
+      ${group.images.map((img, ii) => `
+        <div class="photo" data-gidx="${gi}" data-iidx="${ii}">
+          <div class="photo-img" style="background-image:url('${img.src}')"></div>
+          <div class="img-edit-btn" data-img-target="gallery" data-gidx="${gi}" data-iidx="${ii}">Change image</div>
+          <div class="expand-icon">⤢</div>
+          <div class="field-note mono editable" contenteditable="false" data-gfield="caption" data-gidx="${gi}" data-iidx="${ii}"><b>${group.title}</b> — ${img.caption}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  attachEditableHandlers();
+  attachPhotoClickHandlers();
+}
+
+function applyContent(){
+  document.querySelectorAll('[data-field]').forEach(el => {
+    const key = el.getAttribute('data-field');
+    if (key in content) el.textContent = content[key];
+  });
+  document.querySelectorAll('[data-link-field]').forEach(el => {
+    const key = el.getAttribute('data-link-field');
+    if (content[key]) el.href = content[key];
+  });
+  document.getElementById('hero-bg').style.backgroundImage = `url('${content.heroImage}')`;
+  document.getElementById('doc-photo-img').style.backgroundImage = `url('${content.docImage}')`;
+  document.getElementById('about-photo-img').style.backgroundImage = `url('${content.aboutImage}')`;
+  document.getElementById('year').textContent = new Date().getFullYear();
+  renderMarquee();
+  renderTabs();
+  renderGalleryGrid();
+  observeReveals();
+}
+
+function attachEditableHandlers(){
+  document.querySelectorAll('.editable').forEach(el => {
+    el.oninput = () => {
+      const key = el.getAttribute('data-field');
+      const gfield = el.getAttribute('data-gfield');
+      if (key){
+        content[key] = el.textContent;
+      } else if (gfield === 'caption'){
+        const gi = parseInt(el.getAttribute('data-gidx'));
+        const ii = parseInt(el.getAttribute('data-iidx'));
+        const raw = el.textContent.replace(/^.*?—\s*/, '');
+        content.galleries[gi].images[ii].caption = raw;
+      }
+    };
+  });
+  document.querySelectorAll('.img-edit-btn').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const target = btn.getAttribute('data-img-target');
+      const url = prompt('Paste an image URL:');
+      if (!url) return;
+      if (target === 'hero'){ content.heroImage = url; document.getElementById('hero-bg').style.backgroundImage = `url('${url}')`; }
+      else if (target === 'doc'){ content.docImage = url; document.getElementById('doc-photo-img').style.backgroundImage = `url('${url}')`; }
+      else if (target === 'about'){ content.aboutImage = url; document.getElementById('about-photo-img').style.backgroundImage = `url('${url}')`; }
+      else if (target === 'gallery'){
+        const gi = parseInt(btn.getAttribute('data-gidx'));
+        const ii = parseInt(btn.getAttribute('data-iidx'));
+        content.galleries[gi].images[ii].src = url;
+        renderGalleryGrid();
+      }
+    };
+  });
+}
+
+function handleLinkClick(e, el){
+  if (isEditing){ e.preventDefault(); return false; }
+  return true;
+}
+
+function setEditableState(on){
+  document.querySelectorAll('.editable').forEach(el => el.setAttribute('contenteditable', on ? 'true' : 'false'));
+}
+
+async function toggleEditMode(){
+  if (isEditing){ cancelEdits(); return; }
+  let stored = null;
+  try {
+    const res = await window.storage.get(PASS_KEY, true);
+    stored = res ? res.value : null;
+  } catch(e){ stored = null; }
+
+  if (!stored){
+    const setPass = prompt('Set a passcode to protect editing this site (remember it, you will need it next time):');
+    if (!setPass) return;
+    try { await window.storage.set(PASS_KEY, setPass, true); } catch(e){ toast('Could not save passcode, try again.'); return; }
+  } else {
+    const entered = prompt('Enter the site passcode to edit:');
+    if (entered !== stored){ toast('Incorrect passcode.'); return; }
+  }
+
+  contentBeforeEdit = JSON.parse(JSON.stringify(content));
+  isEditing = true;
+  document.body.classList.add('editing');
+  document.getElementById('edit-toggle').textContent = '✎ Editing…';
+  setEditableState(true);
+}
+
+function cancelEdits(){
+  if (contentBeforeEdit) content = JSON.parse(JSON.stringify(contentBeforeEdit));
+  isEditing = false;
+  document.body.classList.remove('editing');
+  document.getElementById('edit-toggle').textContent = '✎ Edit site';
+  setEditableState(false);
+  applyContent();
+}
+
+async function saveEdits(){
+  try {
+    const result = await window.storage.set(STORAGE_KEY, JSON.stringify(content), true);
+    if (!result){ toast('Save failed — try again.'); return; }
+    toast('Saved. Visible to everyone with the link.');
+  } catch(e){
+    toast('Save failed — try again.');
+    return;
+  }
+  isEditing = false;
+  document.body.classList.remove('editing');
+  document.getElementById('edit-toggle').textContent = '✎ Edit site';
+  setEditableState(false);
+}
+
+async function loadContent(){
+  // 1) Live site: load content.json, edited via the /admin CMS on Netlify.
+  try {
+    const res = await fetch('content.json', { cache: 'no-store' });
+    if (res.ok){
+      const loaded = await res.json();
+      content = Object.assign({}, defaultContent, loaded);
+      if (!content.galleries) content.galleries = defaultContent.galleries;
+    }
+  } catch(e){
+    // content.json not reachable (e.g. opened as a local file) — use embedded defaults
+  }
+  // 2) Chat preview only: Claude's own storage can further override for quick testing here.
+  try {
+    if (window.storage){
+      const res = await window.storage.get(STORAGE_KEY, true);
+      if (res && res.value){
+        const loaded = JSON.parse(res.value);
+        content = Object.assign({}, content, loaded);
+        if (!content.galleries) content.galleries = defaultContent.galleries;
+      }
+    }
+  } catch(e){ /* not running in Claude — ignore */ }
+  applyContent();
+  document.getElementById('loading-screen').style.display = 'none';
+}
+
+/* ---------- LIGHTBOX ---------- */
+let lbGroup = 0, lbIndex = 0;
+
+function attachPhotoClickHandlers(){
+  document.querySelectorAll('.photo').forEach(el => {
+    el.onclick = (e) => {
+      if (isEditing) return;
+      if (e.target.closest('.img-edit-btn')) return;
+      const gi = parseInt(el.getAttribute('data-gidx'));
+      const ii = parseInt(el.getAttribute('data-iidx'));
+      openLightbox(gi, ii);
+    };
+  });
+}
+function openLightbox(gi, ii){
+  lbGroup = gi; lbIndex = ii;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+function renderLightbox(){
+  const group = content.galleries[lbGroup];
+  const img = group.images[lbIndex];
+  document.getElementById('lb-img').src = img.src;
+  document.getElementById('lb-img').alt = img.caption;
+  document.getElementById('lb-caption').innerHTML = `<b>${group.title}</b> — ${img.caption}`;
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+function stepLightbox(dir){
+  const group = content.galleries[lbGroup];
+  lbIndex = (lbIndex + dir + group.images.length) % group.images.length;
+  renderLightbox();
+}
+document.addEventListener('keydown', (e) => {
+  if (document.getElementById('lightbox').classList.contains('open')){
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') stepLightbox(1);
+    if (e.key === 'ArrowLeft') stepLightbox(-1);
+  }
+  if (e.key === 'Escape' && document.body.classList.contains('nav-open')) closeNav();
+});
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target.id === 'lightbox') closeLightbox();
+});
+
+/* ---------- SCROLL REVEAL ---------- */
+let revealObserver = null;
+function observeReveals(){
+  if (!revealObserver){
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+  }
+  document.querySelectorAll('.reveal:not(.in-view)').forEach(el => revealObserver.observe(el));
+}
+
+/* ---------- SCROLLSPY NAV ---------- */
+function setupScrollspy(){
+  const sections = ['work','galleries','about','contact'].map(id => document.getElementById(id)).filter(Boolean);
+  const links = document.querySelectorAll('#nav-overlay a[data-nav]');
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const id = entry.target.id;
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('data-nav') === id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => spy.observe(s));
+}
+
+/* ---------- SCROLL PROGRESS ---------- */
+function updateProgress(){
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress').style.width = (scrolled || 0) + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive:true });
+
+/* ---------- HERO CURSOR GLOW ---------- */
+const heroEl = document.getElementById('hero');
+heroEl.addEventListener('mousemove', (e) => {
+  const rect = heroEl.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  heroEl.style.setProperty('--mx', x + '%');
+  heroEl.style.setProperty('--my', y + '%');
+});
+
+if (!window.storage){
+  const editBtn = document.getElementById('edit-toggle');
+  if (editBtn) editBtn.style.display = 'none';
+}
+
+setupScrollspy();
+loadContent();
+</script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+{
+  "name": "Shanmuga Santhosh",
+  "name2": "Shanmuga Santhosh",
+  "heroEyebrow": "Travel photography · documentary film",
+  "heroTitle": "Stories the map doesn't show.",
+  "heroTagline": "Festivals, faith, and everyday emotion across India — carried home in frames and film.",
+  "heroImage": "https://picsum.photos/seed/kashi-hero/1800/1100",
+  "docTitle": "Unseen Kashi",
+  "docDescription": "A long-form documentary following the ghats of Varanasi at first light — the rituals, the boatmen, the mourners and the priests — told through the people the city rarely lets a camera close to.",
+  "docLinkLabel": "Watch on YouTube",
+  "docLinkUrl": "https://youtube.com",
+  "docImage": "https://picsum.photos/seed/kashi-doc/1000/1250",
+  "statementText": "I don't chase the postcard shot — I wait for the moment right after it, when the ritual is over and the people are still standing there, being human.",
+  "galleriesTitle": "Field work, by place.",
+  "galleriesNote": "A running archive of festivals and quiet, unnamed moments — sorted the way a field notebook would.",
+  "aboutIntro": "I go where the festival crowd thins out — that's usually where the real story is standing quietly to one side.",
+  "aboutBody": "By day I work in automotive market research; the rest of my time goes to a camera bag and a notebook. My work follows human emotion through cultural festivals and everyday ritual across India — Kashi's ghats, Gudi Padwa in Mumbai, the deserts of Rajasthan — shot, cut, and voiced myself.",
+  "aboutImage": "https://picsum.photos/seed/santhosh-about/900/1200",
+  "factFocus": "Human emotion, festivals, unseen India",
+  "factTools": "Adobe Premiere Pro",
+  "factBased": "India",
+  "contactTitle": "Have a story worth following?",
+  "emailLabel2": "hello@example.com →",
+  "instagramLabel": "Instagram",
+  "instagramUrl": "https://instagram.com/shanmugsan",
+  "youtubeLabel": "YouTube",
+  "youtubeUrl": "https://youtube.com/@shanmugsan",
+  "emailLabel": "Email",
+  "emailUrl": "mailto:hello@example.com",
+  "galleries": [
+    {
+      "title": "Kashi",
+      "meta": "Varanasi, Uttar Pradesh",
+      "images": [
+        {
+          "src": "https://picsum.photos/seed/kashi-1/1000/1250",
+          "caption": "Ganga aarti, first light — a boatman waiting out the crowd."
+        },
+        {
+          "src": "https://picsum.photos/seed/kashi-2/700/875",
+          "caption": "A priest's hands, mid-ritual, at Dashashwamedh Ghat."
+        },
+        {
+          "src": "https://picsum.photos/seed/kashi-3/700/875",
+          "caption": "Marigold garlands sold by the sackful before dawn."
+        },
+        {
+          "src": "https://picsum.photos/seed/kashi-4/700/875",
+          "caption": "Smoke and stone — the steps before the crowds arrive."
+        },
+        {
+          "src": "https://picsum.photos/seed/kashi-5/700/875",
+          "caption": "A lone diya set adrift on the river at dusk."
+        }
+      ]
+    },
+    {
+      "title": "Gudi Padwa",
+      "meta": "Mumbai, Maharashtra",
+      "images": [
+        {
+          "src": "https://picsum.photos/seed/gudi-1/1000/1250",
+          "caption": "A gudi raised on a Worli balcony at sunrise."
+        },
+        {
+          "src": "https://picsum.photos/seed/gudi-2/700/875",
+          "caption": "Rangoli laid before the household gudi."
+        },
+        {
+          "src": "https://picsum.photos/seed/gudi-3/700/875",
+          "caption": "Neem leaves and sugar crystals — the taste of new year."
+        },
+        {
+          "src": "https://picsum.photos/seed/gudi-4/700/875",
+          "caption": "A procession turning onto a narrow Girgaon lane."
+        },
+        {
+          "src": "https://picsum.photos/seed/gudi-5/700/875",
+          "caption": "Marigolds strung overnight for the morning ceremony."
+        }
+      ]
+    },
+    {
+      "title": "Rajasthan",
+      "meta": "Jaisalmer & Jodhpur",
+      "images": [
+        {
+          "src": "https://picsum.photos/seed/raj-1/1000/1250",
+          "caption": "Dust and gold hour, Thar desert edge."
+        },
+        {
+          "src": "https://picsum.photos/seed/raj-2/700/875",
+          "caption": "Blue lanes of Jodhpur, mid-afternoon quiet."
+        },
+        {
+          "src": "https://picsum.photos/seed/raj-3/700/875",
+          "caption": "A camel driver resting before the evening safari."
+        },
+        {
+          "src": "https://picsum.photos/seed/raj-4/700/875",
+          "caption": "Mirrorwork catching the last light in a Jaisalmer haveli."
+        },
+        {
+          "src": "https://picsum.photos/seed/raj-5/700/875",
+          "caption": "Turbans drying in the sun after the dye market."
+        }
+      ]
+    },
+    {
+      "title": "Streets & Everyday",
+      "meta": "Across India",
+      "images": [
+        {
+          "src": "https://picsum.photos/seed/street-1/1000/1250",
+          "caption": "A chai stall opening before the rest of the street wakes."
+        },
+        {
+          "src": "https://picsum.photos/seed/street-2/700/875",
+          "caption": "Monsoon light through a doorway in the old city."
+        },
+        {
+          "src": "https://picsum.photos/seed/street-3/700/875",
+          "caption": "Hands at work — a craftsman between festival orders."
+        },
+        {
+          "src": "https://picsum.photos/seed/street-4/700/875",
+          "caption": "The in-between moments a documentary crew usually cuts."
+        },
+        {
+          "src": "https://picsum.photos/seed/street-5/700/875",
+          "caption": "A rooftop view held for one more minute before the light goes."
+        }
+      ]
+    }
+  ]
+}
